@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
+
 /**
  * Description: token的校验
  * 该类继承自BasicAuthenticationFilter，在doFilterInternal方法中，
@@ -31,6 +33,7 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
 
     /**
      * 拦截请求，获取请求头信息，校验token合法性
+     *
      * @param request
      * @param response
      * @param chain
@@ -55,25 +58,22 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
 
     /**
      * 拦截请求，获取请求头并校验
+     *
      * @param request
      * @return
      */
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
-        if (token != null) {
-            // parse the token.
-            String user = Jwts.parser()
-                    .setSigningKey("MyJwtSecret")
-                    .parseClaimsJws(token.replace("Bearer ", ""))
-                    .getBody()
-                    .getSubject();
-
-            if (user != null) {
-                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
-            }
-            return null;
+        String username = Optional.ofNullable(token)
+                .map(t -> Jwts.parser()
+                        .setSigningKey("MyJwtSecret")
+                        .parseClaimsJws(t.replace("Bearer ", ""))
+                        .getBody()
+                        .getSubject()).orElse(null);
+        if (username != null) {
+            return new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());
         }
-        return null;
+        throw new RuntimeException("您无权访问！");
     }
 
 }
