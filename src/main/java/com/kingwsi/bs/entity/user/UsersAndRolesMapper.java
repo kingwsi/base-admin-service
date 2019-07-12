@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -22,5 +23,5 @@ public interface UsersAndRolesMapper {
     List<Role> findRolesByUserId(@Param("id") String id);
 
     @Select("SELECT _r.* FROM roles _r LEFT JOIN users_and_roles _u_r ON _r.id = _u_r.role_id LEFT JOIN users _u ON _u_r.user_id = _u.id WHERE _u.username = #{username}")
-    List<Role> findRolesByUserName(@Param("username") String username);
+    HashSet<Role> findRolesByUserName(@Param("username") String username);
 }

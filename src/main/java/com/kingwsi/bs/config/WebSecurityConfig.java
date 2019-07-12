@@ -3,7 +3,6 @@ package com.kingwsi.bs.config;
 import com.kingwsi.bs.jwt.JWTAuthenticationFilter;
 import com.kingwsi.bs.jwt.JWTLoginFilter;
 import com.kingwsi.bs.service.AccessControlService;
-import com.kingwsi.bs.service.UserApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
@@ -49,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .headers().frameOptions().disable().and()
-                .addFilter(new JWTLoginFilter(authenticationManager()))
+                .addFilter(new JWTLoginFilter(authenticationManager(),accessControlService))
                 .addFilter(new JWTAuthenticationFilter(authenticationManager(), accessControlService));
     }
 

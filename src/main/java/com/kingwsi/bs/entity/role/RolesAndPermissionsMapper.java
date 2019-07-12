@@ -5,8 +5,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
-import java.util.List;
-
 /**
  * Description: <br>
  * Comments Name: RolesAndPermissionsMapper<br>
@@ -17,5 +15,5 @@ import java.util.List;
 public interface RolesAndPermissionsMapper {
 
     @Select("SELECT _r.* FROM roles _r LEFT JOIN roles_and_permissions _r_p ON _r.id = _r_p.role_id LEFT JOIN permissions _p ON _p.id = _r_p.permission_id WHERE _p.uri = #{permission.uri} AND _p.method = #{permission.method}")
-    List<Role> selectRolesByPermission(@Param("permission") Permission permission);
+    Role selectRolesByPermission(@Param("permission") Permission permission);
 }

@@ -7,7 +7,9 @@ import com.kingwsi.bs.entity.user.UsersAndRolesMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Description: 访问控制服务<br>
@@ -24,11 +26,12 @@ public class AccessControlService {
     @Autowired
     private UsersAndRolesMapper usersAndRolesMapper;
 
-    public List<Role> listRoleByUserName(String username) {
-        return usersAndRolesMapper.findRolesByUserName(username);
+    public List<String> listRoleByUserName(String username) {
+        HashSet<Role> rolesByUserName = usersAndRolesMapper.findRolesByUserName(username);
+        return rolesByUserName.stream().map(Role::getName).collect(Collectors.toList());
     }
 
-    public List<Role> listRoleByPermission(Permission permission) {
+    public Role getRequiredRoleByPermission(Permission permission) {
         return rolesAndPermissionsMapper.selectRolesByPermission(permission);
     }
 }

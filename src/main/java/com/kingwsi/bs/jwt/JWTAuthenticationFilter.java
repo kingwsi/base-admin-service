@@ -3,6 +3,7 @@ package com.kingwsi.bs.jwt;
 import com.kingwsi.bs.entity.permission.Permission;
 import com.kingwsi.bs.entity.role.Role;
 import com.kingwsi.bs.service.AccessControlService;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +29,6 @@ import java.util.Optional;
  * Author: wangshu
  * Date: 2019/6/29 23:26
  */
-
 public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
 
     private final AccessControlService accessControlService;
@@ -54,9 +55,7 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
             chain.doFilter(request, response);
             return;
         }
-
         UsernamePasswordAuthenticationToken authentication = getAuthentication(request);
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(request, response);
 
@@ -69,21 +68,18 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
      * @return
      */
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-        String username = Optional.ofNullable(request.getHeader("Authorization"))
+        return Optional.ofNullable(request.getHeader("Authorization"))
                 .map(token -> Jwts.parser()
                         .setSigningKey("MyJwtSecret")
                         .parseClaimsJws(token.replace("Bearer ", ""))
-                        .getBody()
-                        .getSubject()).orElse(null);
-
-        if (username != null) {
-            List<Role> roleByUser = accessControlService.listRoleByUserName(username);
-            List<Role> mustRole = accessControlService.listRoleByPermission(new Permission(request.getMethod(), request.getRequestURI()));
-            if (Collections.disjoint(roleByUser, mustRole)){
-                throw new RuntimeException("权限校验失败！");
-            }
-            return new UsernamePasswordAuthenticationToken(username, null, Collections.emptyList());
-        }
-        throw new RuntimeException("您无权访问！");
+                        .getBody())
+                .map(claims -> {
+                    List roleByUser = claims.get("role", List.class);
+                    Role requiredRole = accessControlService.getRequiredRoleByPermission(new Permission(request.getMethod(), request.getRequestURI()));
+                    if (roleByUser.contains(requiredRole.getName())) {
+                        return new UsernamePasswordAuthenticationToken(claims.get("username"), null, Collections.emptyList());
+                    }
+                    return null;
+                }).orElse(null);
     }
 }

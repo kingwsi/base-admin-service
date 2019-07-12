@@ -2,6 +2,7 @@ package com.kingwsi.bs.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kingwsi.bs.entity.user.User;
+import com.kingwsi.bs.service.AccessControlService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Description: []
@@ -28,13 +31,17 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private AuthenticationManager authenticationManager;
 
-    public JWTLoginFilter(AuthenticationManager authenticationManager) {
+    private AccessControlService accessControlService;
+
+    public JWTLoginFilter(AuthenticationManager authenticationManager, AccessControlService accessControlService) {
         this.authenticationManager = authenticationManager;
+        this.accessControlService = accessControlService;
         super.setFilterProcessesUrl("/api/auth");
     }
 
     /**
      * 用户登录校验
+     *
      * @param req
      * @param res
      * @return
@@ -63,8 +70,13 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
                                             FilterChain chain,
                                             Authentication auth) throws IOException, ServletException {
 
+        Map<String, Object> map = new HashMap<String, Object>();
+        String username = ((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername();
+        map.put("role", accessControlService.listRoleByUserName(username));
+        map.put("username",username);
         String token = Jwts.builder()
-                .setSubject(((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername())
+                .setSubject(username)
+                .setClaims(map)
                 .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 24 * 1000))
                 .signWith(SignatureAlgorithm.HS512, "MyJwtSecret")
                 .compact();
