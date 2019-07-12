@@ -4,23 +4,17 @@ spring:
     url: jdbc:h2:file:./target/h2db/db/test;DB_CLOSE_DELAY=-1
     username: test
     password:
-    initialization-mode: NEVER
   jpa:
     database: H2
     show-sql: true
+    hibernate:
+      ddl-auto: update
   h2:
     console:
       path: /h2-console
       settings:
         web-allow-others: true
       enabled: true
-# JWT
-jwt:
-  header: Authorization
-  secret: mySecret
-  #token有效期一天
-  expiration: 86400
-  tokenHead: "Bearer "
 
 server:
   port: 8091

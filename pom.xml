@@ -19,6 +19,7 @@
         <jwt.version>3.8.1</jwt.version>
         <jjwt.version>0.7.0</jjwt.version>
         <swagger2.version>2.9.2</swagger2.version>
+        <mybatis-starter.version>2.0.1</mybatis-starter.version>
     </properties>
 
     <dependencies>
@@ -77,6 +78,12 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
             <version>${swagger2.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>${mybatis-starter.version}</version>
         </dependency>
 
     </dependencies>

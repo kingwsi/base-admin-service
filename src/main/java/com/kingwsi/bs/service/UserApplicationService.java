@@ -1,8 +1,6 @@
 package com.kingwsi.bs.service;
 
-import com.kingwsi.bs.entity.user.User;
-import com.kingwsi.bs.entity.user.UserRepository;
-import com.kingwsi.bs.entity.user.UserVO;
+import com.kingwsi.bs.entity.user.*;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +25,9 @@ public class UserApplicationService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    private UsersAndRolesRepository usersAndRolesRepository;
+
     public User createUser(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         this.userRepository.save(user);
@@ -47,12 +48,11 @@ public class UserApplicationService {
         throw new RuntimeException("密码错误或账号不存在！");
     }
 
-    public User getCurrent(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        User user = Optional.ofNullable(token)
-                .map(t -> Jwts.parser()
+    public User getCurrentUser(HttpServletRequest request) {
+        User user = Optional.ofNullable(request.getHeader("Authorization"))
+                .map(token -> Jwts.parser()
                         .setSigningKey("MyJwtSecret")
-                        .parseClaimsJws(t.replace("Bearer ", ""))
+                        .parseClaimsJws(token.replace("Bearer ", ""))
                         .getBody()
                         .getSubject())
                 .map(username -> userRepository.findByUsername(username)).orElse(null);

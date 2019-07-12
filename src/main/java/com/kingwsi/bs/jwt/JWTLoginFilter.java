@@ -9,7 +9,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import javax.security.sasl.AuthenticationException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +30,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
 
     public JWTLoginFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
+        super.setFilterProcessesUrl("/api/auth");
     }
 
     /**
@@ -56,7 +56,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
         }
     }
 
-    // 用户成功登录后，这个方法会被调用，我们在这个方法里生成token
+    // 身份校验通过后处理，生成token
     @Override
     protected void successfulAuthentication(HttpServletRequest req,
                                             HttpServletResponse res,

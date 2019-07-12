@@ -1,7 +1,6 @@
 package com.kingwsi.bs.api;
 
 import com.kingwsi.bs.entity.user.User;
-import com.kingwsi.bs.entity.user.UserVO;
 import com.kingwsi.bs.service.UserApplicationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Description: [授权相关接口]
+ * Description: 授权相关接口
  * Name: AuthController
  * Author: wangshu
  * Date: 2019/6/29 15:15
@@ -24,18 +23,18 @@ public class AuthController {
 
     @Autowired
     UserApplicationService userApplicationService;
-
-    @ApiOperation("创建令牌")
-    @PostMapping
-    public ResponseEntity<String> auth(@RequestBody UserVO vo)
-    {
-
-        return ResponseEntity.ok(userApplicationService.createToken(vo));
-    }
+//
+//    @ApiOperation("创建令牌")
+//    @PostMapping
+//    public ResponseEntity<String> auth(@RequestBody UserVO vo)
+//    {
+//
+//        return ResponseEntity.ok(userApplicationService.createToken(vo));
+//    }
 
     @ApiOperation("获取当前用户信息")
     @GetMapping
     public ResponseEntity<User> getCurrentUser(HttpServletRequest request) {
-        return ResponseEntity.ok(userApplicationService.getCurrent(request));
+        return ResponseEntity.ok(userApplicationService.getCurrentUser(request));
     }
 }

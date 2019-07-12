@@ -2,6 +2,7 @@ package com.kingwsi.bs.service;
 
 import com.kingwsi.bs.entity.user.User;
 import com.kingwsi.bs.entity.user.UserRepository;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

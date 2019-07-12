@@ -16,13 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Description: []
- * Name: Swagger2
+ * Description: swagger文档配置
+ * Name: Swagger2Config
  * Author: wangshu
  * Date: 2019/6/29 15:32
  */
 @Configuration
-public class Swagger2 {
+public class Swagger2Config {
     @Bean
     public Docket createRestApi() {
         ParameterBuilder ticketPar = new ParameterBuilder();
@@ -43,8 +43,8 @@ public class Swagger2 {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("构建api文档")
-                .description("简单优雅的restful风格")
+                .title("Swagger-UI")
+                .description("restful风格")
                 .termsOfServiceUrl("https://swagger.io/")
                 .version("1.0")
                 .build();

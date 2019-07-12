@@ -7,7 +7,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 /**
- * Description: []
+ * Description: 全局跨域配置
  * Name: CorsConfig
  * Author: wangshu
  * Date: 2019/6/30 22:34
