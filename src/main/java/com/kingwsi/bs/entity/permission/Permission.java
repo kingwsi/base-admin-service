@@ -1,13 +1,11 @@
 package com.kingwsi.bs.entity.permission;
 
+import com.kingwsi.bs.entity.common.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -21,11 +19,8 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Entity
 @Table(name = "permissions")
-public class Permission {
-    @Id
-    @GenericGenerator(name = "uuid", strategy = "uuid")
-    @GeneratedValue(generator = "uuid")
-    private String id;
+public class Permission extends BaseEntity {
+
     private String name;
     private String uri;
     private String method;

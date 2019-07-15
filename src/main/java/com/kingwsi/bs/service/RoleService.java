@@ -1,13 +1,9 @@
 package com.kingwsi.bs.service;
 
-import com.kingwsi.bs.entity.permission.Permission;
-import com.kingwsi.bs.entity.role.Role;
 import com.kingwsi.bs.entity.role.RoleRepository;
 import com.kingwsi.bs.entity.role.RolesAndPermissionsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Description: 角色服务<br>
