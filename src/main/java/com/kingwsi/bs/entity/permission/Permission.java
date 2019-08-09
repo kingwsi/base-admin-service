@@ -1,12 +1,15 @@
 package com.kingwsi.bs.entity.permission;
 
-import com.kingwsi.bs.entity.common.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
  * Description: 权限实体<br>
@@ -19,9 +22,12 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Entity
 @Table(name = "permissions")
-public class Permission extends BaseEntity {
+public class Permission implements Serializable {
 
-    private String name;
+    @Id
+    @GenericGenerator(name = "uuid", strategy = "uuid")
+    @GeneratedValue(generator = "uuid")
+    String id;
     private String uri;
     private String method;
 

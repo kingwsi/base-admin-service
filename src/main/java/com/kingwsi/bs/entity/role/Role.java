@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
  * Description: 角色<br>
@@ -22,7 +23,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Entity
 @Table(name = "roles")
-public class Role extends BaseEntity {
+public class Role implements Serializable {
     @Id
     @GenericGenerator(name = "uuid", strategy = "uuid")
     @GeneratedValue(generator = "uuid")
