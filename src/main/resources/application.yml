@@ -1,6 +1,6 @@
 spring:
   datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
+    type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:h2:file:./target/h2db/db/test;DB_CLOSE_DELAY=-1
     username: test
     password:
@@ -20,4 +20,4 @@ spring:
     enabled: true
     drop-first: false
 server:
-  port: 8091
+  port: 8094
