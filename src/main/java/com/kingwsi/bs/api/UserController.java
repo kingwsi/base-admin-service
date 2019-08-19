@@ -1,11 +1,13 @@
 package com.kingwsi.bs.api;
 
 import com.kingwsi.bs.entity.user.User;
+import com.kingwsi.bs.exception.CustomException;
 import com.kingwsi.bs.service.UserApplicationService;
 import com.kingwsi.bs.util.annotations.Debug;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.HandlerMethod;
@@ -43,9 +45,14 @@ public class UserController {
         return ResponseEntity.ok(createdUser);
     }
 
-    @Debug
     @GetMapping
-    public ResponseEntity<List> test() {
+    public void test() {
+        throw new CustomException("自定义异常信息", HttpStatus.BAD_REQUEST);
+    }
+
+    @Debug
+    @GetMapping("/apis")
+    public ResponseEntity<List> getAllApi() {
         Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
         List<HashMap<String, String>> urlList = new ArrayList<HashMap<String, String>>();
 
