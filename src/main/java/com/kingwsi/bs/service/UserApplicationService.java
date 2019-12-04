@@ -45,7 +45,6 @@ public class UserApplicationService {
             map.put("role", usersAndRolesMapper.findRoleIdsByUserId(user.getId()));
             map.put("user", user.getUsername());
             return Jwts.builder()
-                    .setSubject("8989")
                     .setClaims(map)
                     .setExpiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
                     .signWith(SignatureAlgorithm.HS512, "MyJwtSecret")
