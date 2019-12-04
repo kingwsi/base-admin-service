@@ -40,6 +40,12 @@ databaseChangeLog:
                   constraints:
                     nullable: true
               - column:
+                  name: full_name
+                  type: varchar(50)
+                  remarks: 全名
+                  constraints:
+                    nullable: true
+              - column:
                   name: created_by
                   type: varchar(50)
                   remarks: 创建者
@@ -122,6 +128,29 @@ databaseChangeLog:
                   remarks: 权限id
                   constraints:
                     nullable: false
+        # 权限角色关联表
+        - createTable:
+            tableName: user_and_roles
+            columns:
+              - column:
+                  name: id
+                  type: varchar(32)
+                  remarks: id
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: varchar(40)
+                  remarks: 用户id
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role_id
+                  type: varchar(32)
+                  remarks: 角色id
+                  constraints:
+                    nullable: false
         - loadData:
             encoding: utf-8
             tableName: users
@@ -141,4 +170,9 @@ databaseChangeLog:
             encoding: utf-8
             tableName: roles_and_permissions
             file: classpath:liquibase/csv/roles_and_permissions.csv
+            separator: ";"
+        - loadData:
+            encoding: utf-8
+            tableName: user_and_roles
+            file: classpath:liquibase/csv/user_and_roles.csv
             separator: ";"

@@ -20,7 +20,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "users_and_roles")
+@Table(name = "user_and_roles")
 public class UsersAndRoles {
     @Id
     @GenericGenerator(name = "uuid", strategy = "uuid")

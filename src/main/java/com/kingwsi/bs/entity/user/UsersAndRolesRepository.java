@@ -11,6 +11,4 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UsersAndRolesRepository extends CrudRepository<UsersAndRoles, String> {
-
-    void getRolesByUserId(String userId);
 }

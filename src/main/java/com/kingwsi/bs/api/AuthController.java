@@ -1,6 +1,7 @@
 package com.kingwsi.bs.api;
 
 import com.kingwsi.bs.entity.user.User;
+import com.kingwsi.bs.entity.user.UserVO;
 import com.kingwsi.bs.service.UserApplicationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,14 +24,14 @@ public class AuthController {
 
     @Autowired
     UserApplicationService userApplicationService;
-//
-//    @ApiOperation("创建令牌")
-//    @PostMapping
-//    public ResponseEntity<String> auth(@RequestBody UserVO vo)
-//    {
-//
-//        return ResponseEntity.ok(userApplicationService.createToken(vo));
-//    }
+
+    @ApiOperation("创建令牌")
+    @PostMapping
+    public ResponseEntity<String> auth(@RequestBody UserVO vo)
+    {
+
+        return ResponseEntity.ok(userApplicationService.createToken(vo));
+    }
 
     @ApiOperation("获取当前用户信息")
     @GetMapping

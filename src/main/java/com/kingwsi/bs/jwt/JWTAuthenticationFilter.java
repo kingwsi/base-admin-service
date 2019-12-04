@@ -51,7 +51,7 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String header = request.getHeader("Authorization");
 
-        if (header == null || !header.startsWith("Bearer ")) {
+        if (header == null) {
             chain.doFilter(request, response);
             return;
         }
@@ -71,15 +71,16 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
         return Optional.ofNullable(request.getHeader("Authorization"))
                 .map(token -> Jwts.parser()
                         .setSigningKey("MyJwtSecret")
-                        .parseClaimsJws(token.replace("Bearer ", ""))
+                        .parseClaimsJws(token)
                         .getBody())
                 .map(claims -> {
-                    List roleByUser = claims.get("role", List.class);
+                    List<?> roleByUser = Optional.ofNullable(claims.get("role", List.class)).orElse(Collections.emptyList());
                     Role requiredRole = accessControlService.getRequiredRoleByPermission(new Permission(request.getMethod(), request.getRequestURI()));
-                    if (roleByUser.contains(requiredRole.getName())) {
+                    if (requiredRole == null) {
                         return new UsernamePasswordAuthenticationToken(claims.get("username"), null, Collections.emptyList());
+                    } else {
+                        return Optional.of(requiredRole).filter(role -> roleByUser.contains(role.getId())).map(role -> new UsernamePasswordAuthenticationToken(claims.get("username"), null, Collections.emptyList())).orElse(null);
                     }
-                    return null;
                 }).orElse(null);
     }
 }
