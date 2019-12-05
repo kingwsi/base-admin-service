@@ -53,7 +53,7 @@ public class UserApplicationService {
         throw new CustomException("密码错误或账号不存在！");
     }
 
-    public User getCurrentUser(HttpServletRequest request) {
+    public UserVO getCurrentUser(HttpServletRequest request) {
         User user = Optional.ofNullable(request.getHeader("Authorization"))
                 .map(token -> Jwts.parser()
                         .setSigningKey("MyJwtSecret")
@@ -62,8 +62,14 @@ public class UserApplicationService {
                         .get("user").toString())
                 .map(username -> userRepository.findByUsername(username)).orElse(null);
         if (user == null) {
-            throw new CustomException("身份校验失败！");
+            throw new CustomException("无效令牌！");
         }
-        return user;
+        UserVO vo = new UserVO();
+        vo.setFullName(user.getFullName());
+        vo.setUsername(user.getUsername());
+        vo.setAvatar(user.getAvatar());
+        vo.setIntroduction(user.getIntroduction());
+        vo.setRoles(this.usersAndRolesMapper.findRoleNamesByUserId(user.getId()));
+        return vo;
     }
 }

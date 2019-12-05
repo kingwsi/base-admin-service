@@ -40,8 +40,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = CustomException.class)
     public Map<String, Object> handlerExceptionTest(CustomException ex) {
         Map<String, Object> map = new HashMap<>();
-        map.put("msg", ex.getMessage());
-        map.put("code", ex.getStatus().value());
+        map.put("message", ex.getMessage());
+        map.put("errCode", ex.getStatus().value());
         return map;
     }
 }

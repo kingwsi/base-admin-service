@@ -35,7 +35,7 @@ public class AuthController {
 
     @ApiOperation("获取当前用户信息")
     @GetMapping
-    public ResponseEntity<User> getCurrentUser(HttpServletRequest request) {
+    public ResponseEntity<UserVO> getCurrentUser(HttpServletRequest request) {
         return ResponseEntity.ok(userApplicationService.getCurrentUser(request));
     }
 }

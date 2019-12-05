@@ -19,8 +19,20 @@ databaseChangeLog:
                   name: id
                   type: varchar(32)
                   constraints:
-                    primaryKey: true
-                    nullable: false
+                      primaryKey: true
+                      nullable: false
+              - column:
+                  name: avatar
+                  type: varchar(150)
+                  remarks: 头像
+                  constraints:
+                      nullable: true
+              - column:
+                  name: introduction
+                  type: varchar(50)
+                  remarks: 介绍
+                  constraints:
+                      nullable: true
               - column:
                   name: username
                   type: varchar(20)
@@ -32,13 +44,13 @@ databaseChangeLog:
                   type: varchar(100)
                   remarks: 密码
                   constraints:
-                    nullable: false
+                      nullable: false
               - column:
                   name: real_name
                   type: varchar(50)
                   remarks: 真实姓名
                   constraints:
-                    nullable: true
+                      nullable: true
               - column:
                   name: full_name
                   type: varchar(50)
