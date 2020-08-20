@@ -78,9 +78,9 @@ databaseChangeLog:
                   name: deleted
                   type: boolean
                   remarks: 是否删除
-        # 权限表
+        # 资源
         - createTable:
-            tableName: permissions
+            tableName: resources
             columns:
               - column:
                   name: id
@@ -95,9 +95,39 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
+                  name: path
+                  type: varchar(100)
+                  remarks: 路由path
+                  constraints:
+                    nullable: true
+              - column:
                   name: method
                   type: varchar(10)
                   remarks: 请求方式
+                  constraints:
+                    nullable: true
+              - column:
+                  name: name
+                  type: varchar(50)
+                  remarks: 资源名称
+                  constraints:
+                    nullable: true
+              - column:
+                  name: type
+                  type: varchar(30)
+                  remarks: 资源名称 ROUTE/URL/BUTTON
+                  constraints:
+                    nullable: true
+              - column:
+                  name: parent_id
+                  type: varchar(32)
+                  remarks: 上级id
+                  constraints:
+                    nullable: true
+              - column:
+                  name: sort
+                  type: varchar(32)
+                  remarks: 上级id
                   constraints:
                     nullable: true
         # 角色表
@@ -117,17 +147,16 @@ databaseChangeLog:
                   remarks: 角色名
                   constraints:
                     nullable: false
-        # 权限角色关联表
-        - createTable:
-            tableName: roles_and_permissions
-            columns:
               - column:
-                  name: id
-                  type: varchar(32)
-                  remarks: id
+                  name: description
+                  type: varchar(100)
+                  remarks: 描述
                   constraints:
-                    primaryKey: true
                     nullable: false
+        # 角色资源关联表
+        - createTable:
+            tableName: roles_and_resources
+            columns:
               - column:
                   name: role_id
                   type: varchar(32)
@@ -135,12 +164,12 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: permission_id
+                  name: resource_id
                   type: varchar(40)
                   remarks: 权限id
                   constraints:
                     nullable: false
-        # 权限角色关联表
+        # 角色用户表
         - createTable:
             tableName: user_and_roles
             columns:
@@ -175,16 +204,16 @@ databaseChangeLog:
             separator: ";"
         - loadData:
             encoding: utf-8
-            tableName: permissions
-            file: classpath:liquibase/csv/permissions.csv
+            tableName: resources
+            file: classpath:liquibase/csv/resources.csv
             separator: ";"
         - loadData:
             encoding: utf-8
-            tableName: roles_and_permissions
-            file: classpath:liquibase/csv/roles_and_permissions.csv
+            tableName: roles_and_resources
+            file: classpath:liquibase/csv/roles_and_resources.csv
             separator: ";"
         - loadData:
             encoding: utf-8
             tableName: user_and_roles
-            file: classpath:liquibase/csv/user_and_roles.csv
+            file: classpath:liquibase/csv/users_and_roles.csv
             separator: ";"

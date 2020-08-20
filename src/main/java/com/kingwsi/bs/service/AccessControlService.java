@@ -1,15 +1,15 @@
 package com.kingwsi.bs.service;
 
-import com.kingwsi.bs.entity.permission.Permission;
+import com.kingwsi.bs.entity.authority.Principal;
+import com.kingwsi.bs.entity.resource.Resource;
 import com.kingwsi.bs.entity.role.Role;
-import com.kingwsi.bs.entity.role.RolesAndPermissionsMapper;
-import com.kingwsi.bs.entity.user.UsersAndRolesMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.kingwsi.bs.common.exception.CustomException;
+import com.kingwsi.bs.mapper.*;
+import com.kingwsi.bs.entity.user.UserVO;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Description: 访问控制服务<br>
@@ -20,18 +20,59 @@ import java.util.stream.Collectors;
 @Service
 public class AccessControlService {
 
-    @Autowired
-    private RolesAndPermissionsMapper rolesAndPermissionsMapper;
+    private final UsersAndRolesMapper usersAndRolesMapper;
 
-    @Autowired
-    private UsersAndRolesMapper usersAndRolesMapper;
+    private final RoleMapper roleMapper;
 
-    public List<String> listRoleByUserName(String username) {
-        HashSet<Role> rolesByUserName = usersAndRolesMapper.findRolesByUserName(username);
-        return rolesByUserName.stream().map(Role::getName).collect(Collectors.toList());
+    private final RedisTemplate<String, Object> redisTemplate;
+
+    private final UserMapper userMapper;
+
+    private final ResourceService resourceService;
+
+    private final ResourceMapper resourceMapper;
+
+    public AccessControlService(UsersAndRolesMapper usersAndRolesMapper, RoleMapper roleMapper, RedisTemplate<String, Object> redisTemplate, UserMapper userMapper, ResourceService resourceService, ResourceMapper resourceMapper) {
+        this.resourceMapper = resourceMapper;
+        this.usersAndRolesMapper = usersAndRolesMapper;
+        this.roleMapper = roleMapper;
+        this.redisTemplate = redisTemplate;
+        this.userMapper = userMapper;
+        this.resourceService = resourceService;
     }
 
-    public Role getRequiredRoleByPermission(Permission permission) {
-        return rolesAndPermissionsMapper.selectRolesByPermission(permission);
+    /**
+     * 查询用户拥有的角色列表
+     *
+     * @param userId
+     * @return
+     */
+    public List<Role> getRolesByUserId(String userId) {
+        return roleMapper.selectByUserId(userId);
+    }
+
+    public Principal getPrincipal(String userId) {
+        Principal principal = new Principal();
+        principal.setRoles(this.getRolesByUserId(userId));
+        principal.setUser(userMapper.selectById(userId));
+        return principal;
+    }
+
+    /**
+     * 查询用户所拥有的url类型资源，并按请求方式过滤
+     * @param userId
+     * @param method
+     * @return
+     */
+    public List<Resource> listByUserAndMethod(String userId, String method) {
+        return resourceMapper.selectByUserAndMethod(userId, method);
+    }
+
+    public UserVO getUserWithRoleByUsername(String username) {
+        UserVO userVO = usersAndRolesMapper.listUserWithRolesByUsername(username);
+        if (userVO == null) {
+            throw new CustomException("获取用户信息失败");
+        }
+        return userVO;
     }
 }

@@ -1,14 +1,16 @@
 package com.kingwsi.bs.api;
 
-import com.kingwsi.bs.entity.user.User;
-import com.kingwsi.bs.exception.CustomException;
-import com.kingwsi.bs.service.UserApplicationService;
-import com.kingwsi.bs.util.annotations.Debug;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.kingwsi.bs.entity.user.UserVO;
+import com.kingwsi.bs.common.security.TokenUtil;
+import com.kingwsi.bs.service.UserService;
+import com.kingwsi.bs.service.UserDetailServiceImpl;
+import com.kingwsi.bs.common.bean.ResponseData;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
@@ -16,6 +18,7 @@ import org.springframework.web.servlet.mvc.condition.RequestMethodsRequestCondit
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,34 +30,52 @@ import java.util.Map;
  * Author: wangshu
  * Date: 2019/6/29 23:33
  */
-@Api(tags = "用户相关接口")
+@Api(tags = "系统用户")
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/user")
 public class UserController {
 
-    @Autowired
-    private UserApplicationService userApplicationService;
+    private final UserService userService;
 
-    @Autowired
-    private RequestMappingHandlerMapping requestMappingHandlerMapping;
+    private final UserDetailServiceImpl userDetailService;
+
+    private final RequestMappingHandlerMapping requestMappingHandlerMapping;
+
+    public UserController(UserService userService, UserDetailServiceImpl userDetailService, RequestMappingHandlerMapping requestMappingHandlerMapping) {
+        this.userService = userService;
+        this.userDetailService = userDetailService;
+        this.requestMappingHandlerMapping = requestMappingHandlerMapping;
+    }
 
     @ApiOperation("创建用户")
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User createdUser = userApplicationService.createUser(user);
-        return ResponseEntity.ok(createdUser);
+    public ResponseData createUser(@Validated @RequestBody UserVO user) {
+        userService.createUser(user);
+        return ResponseData.OK();
     }
 
-    @GetMapping
-    public void test() {
-        throw new CustomException("自定义异常信息", HttpStatus.BAD_REQUEST);
+    @ApiOperation("更新用户")
+    @PutMapping
+    public ResponseData update(@Validated(Update.class) @RequestBody UserVO userVO) {
+        userService.updateUser(userVO);
+        return ResponseData.OK();
     }
 
-    @Debug
+    @ApiOperation("获取用户分页")
+    @GetMapping("/page")
+    public ResponseData page(Page<UserVO> page, UserVO userVO) {
+        return ResponseData.OK(userService.listUsersOfPage(page, userVO));
+    }
+
+    @ApiOperation("获取用户信息")
+    @GetMapping("/info")
+    public ResponseData getUserInfo(HttpServletRequest httpServletRequest) {
+        return ResponseData.OK(TokenUtil.getCurrentUser(httpServletRequest));
+    }
+
     @GetMapping("/apis")
     public ResponseEntity<List> getAllApi() {
-        Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
-        List<HashMap<String, String>> urlList = new ArrayList<HashMap<String, String>>();
+        List<HashMap<String, String>> urlList = new ArrayList<>();
 
         Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
         for (Map.Entry<RequestMappingInfo, HandlerMethod> m : map.entrySet()) {
@@ -66,10 +87,10 @@ public class UserController {
                 hashMap.put("url", url);
             }
             hashMap.put("className", method.getMethod().getDeclaringClass().getName()); // 类名
-            hashMap.put("", method.getMethod().getName()); // 方法名
+            hashMap.put("methodName", method.getMethod().getName()); // 方法名
             RequestMethodsRequestCondition methodsCondition = info.getMethodsCondition();
             String type = methodsCondition.toString();
-            if (type != null && type.startsWith("[") && type.endsWith("]")) {
+            if (type.startsWith("[") && type.endsWith("]")) {
                 type = type.substring(1, type.length() - 1);
                 hashMap.put("method", type); // 方法名
             }
