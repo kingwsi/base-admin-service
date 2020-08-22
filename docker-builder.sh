@@ -3,7 +3,7 @@ SERVER_NAME=base-admin-service
 
 mv ./target/admin-service-0.0.1-SNAPSHOT.jar ./
 
-echo '---------准备构建${SERVER_NAME}---------'
+echo '---------准备构建$SERVER_NAME---------'
 
 #容器id
 CID=$(docker ps | grep "$SERVER_NAME" | awk '{print $1}')
@@ -15,11 +15,9 @@ if [ -n "$IID" ]; then
         echo "删除旧$SERVER_NAME镜像，IID=$IID"
         docker rmi $IID
         echo "已删除，重新构建镜像"
-        cd $BASE_PATH
         docker build -t $SERVER_NAME .
 else
         echo "不存在$SERVER_NAME镜像，开始构建镜像"
-        cd $BASE_PATH
         docker build -t $SERVER_NAME .
         echo "构建完成！即将运行$SERVER_NAME"
 fi
