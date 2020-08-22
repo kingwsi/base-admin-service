@@ -1,16 +1,9 @@
 #docker 镜像/容器名字或者jar名字 这里都命名为这个
 SERVER_NAME=base-admin-service
-#操作/项目路径(Dockerfile存放的路劲)
-BASE_PATH=/var/lib/jenkins/dockerbuild/$SERVER_NAME
-# 源jar路径  即jenkins构建后存放的路径
-SOURCE_PATH=/var/lib/jenkins/workspace
 
-echo "移动 $SOURCE_PATH/$SERVER_NAME/admin-service/target/admin-service-0.0.1-SNAPSHOT.jar 至 $BASE_PATH ...."
-#把项目从jenkins构建后的目录移动到我们的项目目录下同时重命名下
-mv $SOURCE_PATH/$SERVER_NAME/admin-service/target/admin-service-0.0.1-SNAPSHOT.jar $BASE_PATH/admin-service-0.0.1-SNAPSHOT.jar
-#移动 Dockerfile
-mv $SOURCE_PATH/$SERVER_NAME/admin-service/Dockerfile $BASE_PATH
-echo "完成"
+mv ./target/admin-service-0.0.1-SNAPSHOT.jar ./
+
+echo '---------准备构建${SERVER_NAME}---------'
 
 #容器id
 CID=$(docker ps | grep "$SERVER_NAME" | awk '{print $1}')
@@ -34,18 +27,20 @@ fi
 if [ -n "$CID" ]; then
         echo "正在停止$SERVER_NAME，CID=$CID"
         docker stop $CID
-        echo "已停止！"
+        echo "$SERVER_NAME，CID=$CID 已停止！"
 else
         echo "容器 $SERVER_NAME 未运行"
 fi
-
+echo '准备启动$SERVER_NAME...'
 # 运行docker容器
 docker run \
---name $SERVER_NAME\
+--name $SERVER_NAME \
 --rm \
---restart=always \
--d\
--p 8094:8094\
+-d \
+-p 18093:8094 \
 $SERVER_NAME
-
-echo "$SERVER_NAME 已启动"
+if [ $? -ne 0 ];then
+    echo "$SERVER_NAME 启动失败！"
+else
+    echo "$SERVER_NAME 已启动..."
+fi
