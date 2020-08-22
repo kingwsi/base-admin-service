@@ -15,6 +15,6 @@ pipeline {
 }
 node{
     stage('docker镜像构建') { 
-      sh 'sh build-docker.sh'
+      sh 'sh docker-builder.sh'
     }
 }
