@@ -4,10 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kingwsi.bs.common.enumerate.ResourceTypeEnum;
-import com.kingwsi.bs.entity.resource.Resource;
-import com.kingwsi.bs.entity.resource.ResourceConvertMapper;
-import com.kingwsi.bs.entity.resource.ResourceQuery;
-import com.kingwsi.bs.entity.resource.ResourceVO;
+import com.kingwsi.bs.entity.resource.*;
 import com.kingwsi.bs.entity.user.UserVO;
 import com.kingwsi.bs.common.exception.CustomException;
 import com.kingwsi.bs.common.security.TokenUtil;
@@ -83,6 +80,11 @@ public class ResourceService {
 
     public List<ResourceVO> list() {
         List<Resource> resources = resourceMapper.selectList(Wrappers.emptyWrapper());
+        return resourceConvertMapper.toResourceVOs(resources);
+    }
+
+    public List<ResourceVO> currentUserRouters() {
+        List<Resource> resources = resourceMapper.selectByUserId(TokenUtil.getUserId());
         return resourceConvertMapper.toResourceVOs(resources);
     }
 }

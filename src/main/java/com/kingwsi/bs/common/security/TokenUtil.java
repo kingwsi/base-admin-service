@@ -94,7 +94,7 @@ public class TokenUtil {
      * @return
      */
     public static String getUserId() {
-        String userId = "-1";
+        String userId = "unknown";
         try {
             ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             assert servletRequestAttributes != null;

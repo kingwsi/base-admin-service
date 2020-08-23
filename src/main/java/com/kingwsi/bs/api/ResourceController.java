@@ -35,7 +35,7 @@ public class ResourceController {
     @ApiOperation("获取菜单列表")
     @GetMapping("/routes")
     public ResponseData listRoutes() {
-        return ResponseData.OK(resourceService.listByType(ResourceTypeEnum.MENU));
+        return ResponseData.OK(resourceService.currentUserRouters());
     }
 
     @ApiOperation("创建资源")
