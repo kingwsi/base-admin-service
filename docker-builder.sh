@@ -6,7 +6,7 @@ mv -f ./target/base-admin-service-0.0.1-SNAPSHOT.jar ./
 echo '---------准备构建$SERVER_NAME---------'
 
 #容器id
-CID=$(docker ps | grep "$SERVER_NAME" | awk '{print $1}')
+CID=$(docker ps -a | grep "$SERVER_NAME" | awk '{print $1}')
 #镜像id
 IID=$(docker images | grep "$SERVER_NAME" | awk '{print $3}')
 
