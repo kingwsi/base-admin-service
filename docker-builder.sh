@@ -1,7 +1,7 @@
 #docker 镜像/容器名字或者jar名字 这里都命名为这个
 SERVER_NAME=base-admin-service
 
-mv ./target/base-admin-service-0.0.1-SNAPSHOT.jar ./
+mv -f ./target/base-admin-service-0.0.1-SNAPSHOT.jar ./
 
 echo '---------准备构建$SERVER_NAME---------'
 
@@ -21,7 +21,7 @@ else
         docker build -t $SERVER_NAME .
         echo "构建完成！即将运行$SERVER_NAME"
 fi
-rm -rf base-admin-service-0.0.1-SNAPSHOT.jar
+
 # 停掉原来的
 if [ -n "$CID" ]; then
         echo "正在停止$SERVER_NAME，CID=$CID"
