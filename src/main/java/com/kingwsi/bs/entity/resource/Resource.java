@@ -27,7 +27,7 @@ public class Resource extends BaseEntity {
     private String uri;
 
     // 请求方式 GET;POST;OPTIONS;DELETE;PUT
-    private String method;
+    private String methods;
 
     // 描述
     private String description;

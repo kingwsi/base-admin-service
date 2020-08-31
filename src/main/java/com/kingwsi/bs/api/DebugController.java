@@ -25,7 +25,7 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 @Api(tags = "debug")
 @RestController
-@RequestMapping("/debug")
+@RequestMapping("/api/debug")
 public class DebugController {
 
     private final RoleService roleService;

@@ -44,10 +44,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/auth").permitAll()
-                .antMatchers("/debug/**").permitAll()
+                .antMatchers("/api/debug/**").permitAll()
                 .antMatchers("/webjars/**", "/swagger**/**", "/v2/api-docs**", "/h2-console/**").permitAll()
                 .antMatchers("/**/*.gif", "/**/*.png", "/**/*.jpg", "/**/*.html", "/**/*.js", "/**/*.css", "/**/*.ico").permitAll()
-//                .antMatchers("/**").access("@customResourceFilterHandler.hasPermission(request ,authentication)")
+                .antMatchers("/**").access("@customResourceFilterHandler.hasPermission(request ,authentication)")
                 .anyRequest().authenticated()
                 // 解决页面frame嵌套报错问题
                 .and().headers().frameOptions().disable()

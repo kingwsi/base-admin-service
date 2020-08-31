@@ -55,8 +55,8 @@
          LEFT JOIN sys_users_and_roles suar on srar.role_id = suar.role_id
         WHERE
             suar.user_id = #{userId}
-        AND sr.type = 'URL'
-        AND sr.method = #{method}
+        AND sr.type = 'API'
+        AND sr.methods LIKE CONCAT('%',#{method},'%')
     </select>
     <select id="selectOfPage" resultType="com.kingwsi.bs.entity.resource.ResourceVO">
         SELECT * FROM sys_resources

@@ -11,7 +11,7 @@ public class ResourceNode {
     private String name;
     private ResourceTypeEnum type;
     private String uri;
-    private String method;
+    private String methods;
     private String parentId;
     private Integer sort;
     List<ResourceNode> children;

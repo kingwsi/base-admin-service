@@ -12,7 +12,7 @@ public class ResourceVO {
     private ResourceTypeEnum type;
     private String description;
     private String uri;
-    private String method;
+    private String methods;
     private String parentId;
     private String sort;
     private String component;
