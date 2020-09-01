@@ -18,8 +18,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(value = Exception.class)
+    public ResponseData handlerException(Exception e) {
+        log.error(e.getMessage());
+        return ResponseData.FAIL("服务器异常", 500);
+    }
+
     @ExceptionHandler(value = CustomException.class)
-    public ResponseData handlerExceptionTest(CustomException ex) {
+    public ResponseData handlerCustomException(CustomException ex) {
         log.warn(ex.getMessage());
         return ResponseData.FAIL(ex.getMessage(), ex.getStatus().value());
     }
