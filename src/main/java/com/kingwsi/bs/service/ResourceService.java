@@ -45,10 +45,6 @@ public class ResourceService {
         return resourceMapper.selectRouteByUserId(currentUser.getId());
     }
 
-    public List<Resource> listByUserId(String userId) {
-        return resourceMapper.selectByUserId(userId);
-    }
-
     public List<Resource> listByMethodAndUserId(String method, String userId, String uri) {
         return resourceMapper.selectByMethodAndUserIdAndUri(method, userId, uri);
     }
@@ -84,7 +80,7 @@ public class ResourceService {
     }
 
     public List<ResourceVO> currentUserRouters() {
-        List<Resource> resources = resourceMapper.selectByUserId(TokenUtil.getUserId());
+        List<Resource> resources = resourceMapper.selectRouteByUserId(TokenUtil.getUserId());
         return resourceConvertMapper.toResourceVOs(resources);
     }
 }

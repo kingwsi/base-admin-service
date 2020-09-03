@@ -31,7 +31,7 @@
             <result column="type" property="type"/>
             <result column="resourceDescription" property="description"/>
             <result column="uri" property="uri"/>
-            <result column="method" property="method"/>
+            <result column="methods" property="methods"/>
         </collection>
     </resultMap>
 
@@ -68,7 +68,7 @@
                s.id AS sid,
                s.name AS resourceName,
                s.uri,
-               s.method,
+               s.methods,
                s.description AS resourceDescription,
                s.sort,
                s.type
