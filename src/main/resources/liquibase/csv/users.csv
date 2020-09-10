@@ -1,3 +1,3 @@
-id,username,full_name,password,avatar,status
-1,admin,管理员,$2a$10$vswPCKaH2RJ.hzBPOHsrVO2k72nqkVt3VigmJUvboHYiOAjN4XlX.,https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png,1
-2,test,测试,$2a$10$f71x3715SbPYlqA8QbmIyeR5JnJKhvBFYdX/xV/hHknAV42prD5SW,,1
+id,username,full_name,password,avatar,status,nickname
+1,admin,管理员,$2a$10$vswPCKaH2RJ.hzBPOHsrVO2k72nqkVt3VigmJUvboHYiOAjN4XlX.,https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png,1,admin
+2,test,测试,$2a$10$f71x3715SbPYlqA8QbmIyeR5JnJKhvBFYdX/xV/hHknAV42prD5SW,,1,test

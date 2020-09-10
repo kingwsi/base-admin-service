@@ -37,6 +37,7 @@ public class UserVO {
     private String fullName;
     private String avatar;
     private String introduction;
+    private String nickname;
 
     @NotEmpty(groups = {Update.class, Insert.class}, message = "请选择角色")
     private List<String> roles;

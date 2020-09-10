@@ -60,7 +60,7 @@ public class TokenUtil {
 
     /**
      * 解析TOKEN信息并获取当前用户完整信息
-     * 根据token中标识插叙
+     * 根据token中标识
      *
      * @return
      */

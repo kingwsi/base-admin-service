@@ -35,6 +35,9 @@ public class User extends BaseEntity {
     @Column(name = "fullName")
     private String fullName;
 
+    @Column(name = "nickname")
+    private String nickname;
+
     // 状态 0 禁用 1 启用
     @Column(name = "status")
     private String status;

@@ -1,7 +1,6 @@
 package com.kingwsi.bs.api;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.kingwsi.bs.common.enumerate.ResourceTypeEnum;
 import com.kingwsi.bs.entity.resource.ResourceQuery;
 import com.kingwsi.bs.entity.resource.ResourceVO;
 import com.kingwsi.bs.service.ResourceService;

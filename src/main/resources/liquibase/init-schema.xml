@@ -19,6 +19,7 @@
             </column>
 
             <column name="username" type="varchar(100)" remarks="用户名"/>
+            <column name="nickname" type="varchar(255)" remarks="nickname"/>
             <column name="password" type="varchar(255)" remarks="密码"/>
             <column name="full_name" type="varchar(50)" remarks="全名"/>
             <column name="status" type="varchar(2)" remarks="状态 1启用， 0 禁用" defaultValue="1"/>

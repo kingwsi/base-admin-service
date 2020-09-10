@@ -73,6 +73,16 @@ public class UserController {
         return ResponseData.OK(TokenUtil.getCurrentUser(httpServletRequest));
     }
 
+    @ApiOperation("更新用户信息")
+    @GetMapping("/current")
+    public ResponseData updateUserCurrentInfo(HttpServletRequest httpServletRequest, @Validated(Update.class) UserVO userVO) {
+        UserVO currentUser = TokenUtil.getCurrentUser(httpServletRequest);
+        userVO.setId(currentUser.getId());
+        userVO.setUsername(currentUser.getUsername());
+        userService.updateUser(userVO);
+        return ResponseData.OK();
+    }
+
     @GetMapping("/apis")
     public ResponseEntity<List> getAllApi() {
         List<HashMap<String, String>> urlList = new ArrayList<>();
