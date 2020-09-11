@@ -5,3 +5,6 @@ id,uri,name,description,methods,type,icon,parent_id,sort,component,remark
 4,role,角色管理,,,MENU,user,2,3,role/RoleList,
 5,resource/index,资源管理,,,MENU,user,2,4,resource/index,
 6,role/permission/:id,角色权限配置,,,MENU,user,2,4,role/EditResource,hidden
+7,/dashboard,仪表盘,,,MENU,dashboard,-1,1,RouteView,
+8,user/center,个人中心,,,MENU,user,7,2,user/UserInfo,
+9,workplace,工作台,,,MENU,dashboard,7,3,dashboard/Workplace,
