@@ -36,7 +36,7 @@ docker run \
 --name $SERVER_NAME \
 --rm \
 -d \
--p 18102:8094 \
+-p 8102:8094 \
 $SERVER_NAME
 if [ $? -ne 0 ];then
     echo "$SERVER_NAME 启动失败！"
