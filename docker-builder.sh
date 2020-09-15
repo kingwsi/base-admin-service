@@ -3,7 +3,7 @@ SERVER_NAME=base-admin-service
 
 mv -f ./target/base-admin-service-0.0.1-SNAPSHOT.jar ./
 
-echo '---------准备构建$SERVER_NAME---------'
+echo "---------准备构建$SERVER_NAME---------"
 
 #容器id
 CID=$(docker ps -a | grep "$SERVER_NAME" | awk '{print $1}')
@@ -30,13 +30,13 @@ if [ -n "$CID" ]; then
 else
         echo "容器 $SERVER_NAME 未运行"
 fi
-echo '准备启动$SERVER_NAME...'
+echo "准备启动$SERVER_NAME..."
 # 运行docker容器
 docker run \
 --name $SERVER_NAME \
 --rm \
 -d \
--p 18093:8094 \
+-p 18102:8094 \
 $SERVER_NAME
 if [ $? -ne 0 ];then
     echo "$SERVER_NAME 启动失败！"
